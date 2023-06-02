@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Encriptação Simétrica</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            margin-bottom: 30px;
+        }
+        
+        .campo-mensagem {
+            width: 500px;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .campo-mensagem form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .campo-mensagem label {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .campo-mensagem textarea,
+        .campo-mensagem input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+        
+        .campo-mensagem button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .campo-mensagem button:hover {
+            background-color: #45a049;
+        }
+        
+        #resultado, #resultadoDescriptografar{
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        input, textarea{
+            margin-bottom: 35px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chave Simétrica</h1>
+
+    <div class="campo-mensagem">
+    <form class="mensagem">
+        <label for="mensagem">Mensagem:</label>
+        <textarea id="mensagem" rows="4" cols="50"></textarea>
+
+        <label for="chave">Chave:</label>
+        <input type="text" id="chave">
+
+        <button type="button" onclick="criptografar()">Criptografar</button>
+    </form>
+
+    <div id="resultado"></div>
+
+    </div>
+    
+    <div class="campo-mensagem">
+        <form class="mensagem">
+            <label for="mensagemCriptografada">Mensagem criptografada:</label>
+            <textarea id="mensagemCriptografada" rows="4" cols="50"></textarea>
+    
+            <label for="chaveDescriptografar">Chave:</label>
+            <input type="text" id="chaveDescriptografar">
+    
+            <button type="button" onclick="descriptografar()">Descriptografar</button>
+        </form>
+    
+        <div id="resultadoDescriptografar"></div>
+    </div>
+
+    <script>
+        function criptografar() {
+            var mensagem = document.getElementById("mensagem").value;
+            var chave = document.getElementById("chave").value;
+
+            if (mensagem === "" || chave === "") {
+                document.getElementById("resultado").innerHTML = "Por favor, insira uma mensagem e uma chave.";
+                return;
+            }
+
+            var mensagemCriptografada = CryptoJS.AES.encrypt(mensagem, chave).toString();
+
+            document.getElementById("resultado").innerHTML = "Mensagem criptografada: " + mensagemCriptografada;
+        }
+
+        function descriptografar() {
+            var mensagemCriptografada = document.getElementById("mensagemCriptografada").value;
+            var chaveDescriptografar = document.getElementById("chaveDescriptografar").value;
+
+            if (mensagemCriptografada === "" || chaveDescriptografar === "") {
+                document.getElementById("resultadoDescriptografar").innerHTML = "Por favor, insira uma mensagem criptografada e uma chave.";
+                return;
+            }
+
+            var mensagemDescriptografada = CryptoJS.AES.decrypt(mensagemCriptografada, chaveDescriptografar).toString(CryptoJS.enc.Utf8);
+
+            document.getElementById("resultadoDescriptografar").innerHTML = "Mensagem descriptografada: " + mensagemDescriptografada;
+        }
+    </script>
+</body>
+</html>
